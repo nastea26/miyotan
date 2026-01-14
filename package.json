@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.18",
+    "node-tesseract-ocr": "^2.2.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18"
   }
 }
