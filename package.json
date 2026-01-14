@@ -1,0 +1,38 @@
+{
+  "name": "miyotan",
+  "version": "1.0.0",
+  "description": "OCR to capture japanese from screen parse it make it readable some more magic and poof dictionary output!",
+  "keywords": [
+    "ocr",
+    "japanese",
+    "capture",
+    "translate",
+    "dictionary"
+  ],
+  "homepage": "https://github.com/nastea26/miyotan#readme",
+  "bugs": {
+    "url": "https://github.com/nastea26/miyotan/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nastea26/miyotan.git"
+  },
+  "license": "ISC",
+  "author": "nastea26",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "test": "test",
+    "start": "electron .",
+    "tailwind": "npx @tailwindcss/cli -i ./renderer/styles/tailwind.css -o ./renderer/styles/tailwind.out.css --watch",
+    "dev": "concurrently -k -n TAILWIND,ELECTRON \"npm run tailwind\" \"npm run start\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "electron": "^39.2.7"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
+}
