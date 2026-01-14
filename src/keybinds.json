@@ -1,0 +1,15 @@
+{
+    "selection" :{ 
+        "key": "Ctrl+Shift+X",
+        "action": "selection",
+        "description": "Create an overlay window for selecting text.",
+        "alias": "Capture Area"
+    },
+    "cancel" : {
+        "key": "Escape",
+        "action": "cancel",
+        "description": "cancel the selection overlay window.",
+        "alias": "Cancel Selection"
+    }
+
+}

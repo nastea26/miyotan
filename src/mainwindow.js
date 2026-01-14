@@ -9,11 +9,9 @@ function createWindow() {
         height: 800,
         webPreferences: {
             preload: paths.preload,
-            contextIsolation: true,
-            nodeIntegration: false,
         },
     });
-
+    
     mainWindow.loadFile(paths.RENDERER.index);
 
     mainWindow.on("closed", () => {

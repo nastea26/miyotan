@@ -1,3 +1,10 @@
 package-lock.json
 node_modules/
 .env
+roadmap.md
+week-plan.md
+/bin/linux/
+/bin/win/
+/bin/macos/
+/bin/capture/
+/temp/*
