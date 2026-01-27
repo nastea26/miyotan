@@ -2,6 +2,12 @@ const { app } = require("electron");
 const path = require("path");
 
 const root = app.getAppPath();
+const usrData = app.getPath("userData");
+const USERDATA = {
+    self : usrData,
+    settings : path.join(usrData,"settings.json")
+}
+
 const preload = path.join(root, "preload", "preload.js");
 const temp = path.join(root, "temp");
 const SRC = {
@@ -23,6 +29,8 @@ const BIN = {
 
 module.exports = {
     root,
+    USERDATA,
+    
     preload,
     temp,
 

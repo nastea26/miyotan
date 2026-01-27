@@ -19,7 +19,7 @@ ipcMain.handle('selection', async (event, rect) => {
     
     //ocr : 
     await prepIMG();
-    await ocr();
-
+    const ocr_out = await ocr();
+    console.log(`Best candidate: ${ocr_out}`)
 
 });
