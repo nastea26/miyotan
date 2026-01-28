@@ -12,6 +12,9 @@ const { ocr } = require("./ocr/ocr");
 const { getSettings, updateSettingWithPath } = require('./settings/runtime');
 const { registerKeybinds, unregisterKeybinds } = require("./keybinds");
 
+//dictionary 
+const { dicts, importDict, listDicts, loadAllDicts, removeDict } = require('./dicts/manager');
+
 // user rectangle selection from rendered window
 ipcMain.handle('selection', async (event, rect) => {
     if(rect)closeSelectionWindow();
@@ -29,7 +32,7 @@ ipcMain.handle('selection', async (event, rect) => {
 
 ipcMain.handle("get-settings", () => {
     return getSettings();    
-})
+});
 
 ipcMain.handle('update-setting', (event, target, val) =>{
     console.log(`target -> ${target}, new val ${val}`)
@@ -43,4 +46,27 @@ ipcMain.handle('update-setting', (event, target, val) =>{
 
     console.log(getSettings());
 
+});
+
+ipcMain.handle('dict-import', async (event, fileData, fileName) => {
+    try{
+        return await importDict(fileData, fileName);
+    }
+    catch(err){
+        console.error(err);
+        return {error: err.message};
+    }
+});
+
+ipcMain.handle('dict-list', () => listDicts());
+
+ipcMain.handle('dict-remove', async (event, name) => {
+    try{
+        await removeDict(name);
+        return {success:true};
+    }
+    catch(err){
+        console.error(err);
+        return {error: err.message};
+    }
 })

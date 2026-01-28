@@ -148,17 +148,6 @@ window.addEventListener("keyup", e => {
     setTimeout(stopRecording, 30);
 });
 
-
-//fetch settings and preset values based on settings
-window.addEventListener("DOMContentLoaded", async() =>{
-    const settings = await window.miyotanAPI.getSettings();
-    document.querySelector("#enable-miyotan").checked = settings.enabled;
-    document.querySelector("#launch-on-startup").checked = settings.launchOnStartup;
-    document.querySelector(`option[value="${settings.ocr.language}"]`).selected = true;
-    document.querySelector("#ocr-keybind").textContent = settings.hotkeys.selection
-    document.querySelector("#cancel-keybind").textContent = settings.hotkeys.cancel
-});
-
 //handle changes in settings right as they happen
 document.querySelectorAll('.settings-el').forEach(el => {
     el.addEventListener("change", (e) => {
@@ -177,3 +166,95 @@ document.querySelectorAll('.settings-el').forEach(el => {
     })
 });
 
+// Elements
+const configureRow = document.getElementById("configure-dicts-row");
+const dictsModal = document.getElementById("dicts-modal");
+const closeModalBtn = document.getElementById("close-dicts-modal");
+const dictsList = document.getElementById("dicts-list");
+const importBtn = document.getElementById("import-dict-btn");
+const importInput = document.getElementById("import-dict-input");
+
+// Open modal
+configureRow.addEventListener("click", async () => {
+    await refreshDictsList();
+    dictsModal.classList.remove("hidden");
+    dictsModal.classList.add("flex");
+});
+
+// Close modal
+closeModalBtn.addEventListener("click", () => {
+    dictsModal.classList.add("hidden");
+    dictsModal.classList.remove("flex");
+});
+
+// Refresh the list of dictionaries
+async function refreshDictsList() {
+    dictsList.innerHTML = ""; // clear
+    const dicts = await window.miyotanAPI.list();
+    
+    if(dicts.length === 0){
+        dictsList.innerHTML = `<p class="text-gray-400">No dictionaries installed.</p>`;
+        return;
+    }
+    
+    for(const dict of dicts){
+        const row = document.createElement("div");
+        row.className = "flex justify-between items-center p-2 border-b border-gray-700 hover:bg-gray-800 transition-colors duration-200";
+        row.innerHTML = `
+        <span class="text-gray-200">${dict.name} (${dict.entries} entries)</span>
+        <button class="remove-dict-btn text-red-500 hover:text-red-400 px-2 py-1 rounded">Remove</button>
+        `;
+        
+        // Remove handler
+        row.querySelector(".remove-dict-btn").addEventListener("click", async () => {
+            if(confirm(`Remove dictionary "${dict.name}"?`)){
+                await window.miyotanAPI.remove(dict.name);
+                await refreshDictsList();
+            }
+        });
+        
+        dictsList.appendChild(row);
+    }
+}
+
+// Handle import button
+importBtn.addEventListener("click", () => importInput.click());
+
+// Support multiple files
+importInput.multiple = true;
+
+importInput.addEventListener("change", async (e) => {
+    if(importInput.files.length === 0) return;
+    
+    const existingDicts = new Set((await window.miyotanAPI.list()).map(d => d.name));
+    
+    for (const file of importInput.files) {
+        const name = file.name.replace(/\.zip$/i, "");
+        if (existingDicts.has(name)) {
+            alert(`Dictionary "${name}" is already loaded. Skipping.`);
+            continue;
+        }
+        
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            await window.miyotanAPI.import(new Uint8Array(arrayBuffer), file.name);
+        } catch (err) {
+            console.error(`Failed to import ${file.name}:`, err);
+            alert(`Failed to import ${file.name}: ${err.message}`);
+        }
+    }
+    
+    await refreshDictsList();
+    importInput.value = ""; // reset input
+});
+
+
+//fetch settings and preset values based on settings
+window.addEventListener("DOMContentLoaded", async() =>{
+    const settings = await window.miyotanAPI.getSettings();
+    document.querySelector("#enable-miyotan").checked = settings.enabled;
+    document.querySelector("#launch-on-startup").checked = settings.launchOnStartup;
+    document.querySelector(`option[value="${settings.ocr.language}"]`).selected = true;
+    document.querySelector("#ocr-keybind").textContent = settings.hotkeys.selection
+    document.querySelector("#cancel-keybind").textContent = settings.hotkeys.cancel
+});
