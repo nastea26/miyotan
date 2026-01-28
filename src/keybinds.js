@@ -19,4 +19,8 @@ function registerKeybinds() {
     })
 }
 
-exports.registerKeybinds = registerKeybinds;
+function unregisterKeybinds() {
+    globalShortcut.unregisterAll();
+}
+
+module.exports = { registerKeybinds, unregisterKeybinds };

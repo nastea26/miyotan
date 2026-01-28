@@ -14,8 +14,9 @@
     
     <div class="nav flex-col fixed">
         <a href="#general"><div class="flex p-0 mt-1 mr-5 ml-6 text-2xl text-cyan-200 hover:cursor-pointer hover:text-cyan-100 transition duration-300 hover-el"> General </div></a>
-        <div class="flex p-0 mt-5 mr-5 ml-6 text-2xl text-cyan-200 hover:cursor-pointer hover:text-cyan-100 transition duration-300 hover-el"> Dictionaries </div>
-        <div class="flex p-0 mt-5 mr-5 ml-6 text-2xl text-cyan-200 hover:cursor-pointer hover:text-cyan-100 transition duration-300 hover-el"> Anki </div>
+        <a href="#dictionaries"><div class="flex p-0 mt-5 mr-5 ml-6 text-2xl text-cyan-200 hover:cursor-pointer hover:text-cyan-100 transition duration-300 hover-el"> Dictionaries </div></a>
+        <a href="#keybinds"><div class="flex p-0 mt-5 mr-5 ml-6 text-2xl text-cyan-200 hover:cursor-pointer hover:text-cyan-100 transition duration-300 hover-el"> Keybinds </div></a>
+        <a href="#anki"><div class="flex p-0 mt-5 mr-5 ml-6 text-2xl text-cyan-200 hover:cursor-pointer hover:text-cyan-100 transition duration-300 hover-el"> Anki </div></a>
     </div>
     <div class="settings max-w-1/2 h-fit ml-auto mr-auto mt-3">
 
@@ -29,7 +30,7 @@
                 <div class="row p-2 flex justify-between" >
                     <span class="text-1xl p-1 text-gray-300" > Enable Miyotan </span>
                     <div class="enable-miyotan-slider mt-1 mb-1 relative w-11 h-5">
-                        <input type="checkbox" checked id="enable-miyotan" class="enable-miyotan peer appearance-none w-11 h-5 bg-gray-500 rounded-full checked:bg-cyan-600 cursor-pointer transition-colors duration-300" />
+                        <input type="checkbox" id="enable-miyotan" data-setting="enabled" class="settings-el enable-miyotan peer appearance-none w-11 h-5 bg-gray-500 rounded-full checked:bg-cyan-600 cursor-pointer transition-colors duration-300" />
                         <label for="enable-miyotan" class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-cyan-600 cursor-pointer">
                         </label>
                     </div>
@@ -38,7 +39,7 @@
                 <div class="row p-2 flex justify-between" >
                     <span class="text-1xl p-1 text-gray-300" > Launch on start-up</span>
                     <div class="launch-on-startup-slider mt-1 mb-1 relative w-11 h-5">
-                        <input type="checkbox" id="launch-on-startup" class="launch-on-startup peer appearance-none w-11 h-5 bg-gray-500 rounded-full checked:bg-cyan-600 cursor-pointer transition-colors duration-300" />
+                        <input type="checkbox" id="launch-on-startup" data-setting="launchOnStartup" class="settings-el launch-on-startup peer appearance-none w-11 h-5 bg-gray-500 rounded-full checked:bg-cyan-600 cursor-pointer transition-colors duration-300" />
                         <label for="launch-on-startup" class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-cyan-600 cursor-pointer">
                         </label>
                     </div>
@@ -47,9 +48,9 @@
                 <div class="row p-2 flex justify-between" >
                     <span class="text-1xl p-1 text-gray-300" > Language (ocr capture) </span>
                     <div class="ocr-language-wrapper">
-                    <select id="ocr-language-select" name="ocr-language" class="min-w-45 max-w-50 py-1 bg-gray-800 text-gray-200 rounded-md border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-600 transition">
-                        <option value="ja" selected>Japanese</option>
-                        <option value="ja" disabled>Under Construction </option>
+                    <select id="ocr-language-select" name="ocr-language" data-setting="ocr.language" class="settings-el min-w-45 max-w-50 py-1 bg-gray-800 text-gray-200 rounded-md border border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all hover:text-cyan-200 duration-300">
+                        <option value="ja"> Japanese </option>
+                        <option value="en"disabled> Under Construction </option>
                     </select>
                     </div>
                 </div>
@@ -65,8 +66,33 @@
             <div class="category-content-wrapper max-w-full h-fit bg-gray-900">
                 
             </div>
+
         </div>
         
+        <!-- ### KEYBINDS ### -->
+        <div class="category keybinds-settings max-w-full h-fit" id = "keybinds">
+            <div class="category-title flex justify-start">
+                <span class=" flex justify-items-start m-3 text-2xl text-cyan-200"> Keybinds </span>
+            </div>
+            <div class="category-content-wrapper max-w-full h-fit bg-gray-900">
+
+                <div class="row p-2 flex justify-between" >
+                    <span class="text-1xl p-1 text-gray-300" > OCR start selection </span>
+                    <div class="keybind-ocr mt-2 mb-2">
+                        <span id="ocr-keybind" data-setting="hotkeys.selection" class="keybind-el settings-el bg-gray-800 pt-2 pb-2 pr-4 pl-4 rounded-lg text-gray-200 border border-cyan-600 hover:cursor-pointer hover:text-cyan-200 transition-all duration-300"></span>
+                    </div>
+                </div>
+
+                <div class="row p-2 flex justify-between" >
+                    <span class="text-1xl p-1 text-gray-300" > Cancel/Close </span>
+                    <div class="keybind-cancel mt-2 mb-2">
+                        <span id="cancel-keybind" data-setting="hotkeys.cancel" class="keybind-el settings-el bg-gray-800 pt-2 pb-2 pr-4 pl-4 rounded-lg text-gray-200 border border-cyan-600 hover:cursor-pointer hover:text-cyan-200 transition-all duration-300"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

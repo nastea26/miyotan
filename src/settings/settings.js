@@ -11,11 +11,6 @@ function createSettings(){
 }
 
 
-// get readable settings
-
-
-
-
 //validate settings structure on app startup
 function validateSettings(defaults, savedSettings){
     const validated = {};
@@ -64,6 +59,23 @@ function checkSettings (){
     return validated
 }
 
+//update a setting using path provided as an array:
+function updateSetting(settings,pathArray, value) {
+    if (!Array.isArray(pathArray) || pathArray.length === 0) return;
 
 
-module.exports = { settingsExist, createSettings, checkSettings};
+    let current = settings;
+    pathArray.forEach((key, i) => {
+        if (i === pathArray.length - 1) {
+            current[key] = value;
+        } else {
+            if (!current[key] || typeof current[key] !== "object") current[key] = {};
+            current = current[key];
+        }
+    });
+
+    fs.writeFileSync(paths.USERDATA.settings, JSON.stringify(settings, null, 2), "utf-8");
+    return settings;
+}
+
+module.exports = { settingsExist, createSettings, checkSettings, updateSetting};
