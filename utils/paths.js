@@ -5,7 +5,8 @@ const root = app.getAppPath();
 const usrData = app.getPath("userData");
 const USERDATA = {
     self : usrData,
-    settings : path.join(usrData,"settings.json")
+    settings : path.join(usrData,"settings.json"),
+    dicts : path.join(usrData,"dicts"),
 }
 
 const preload = path.join(root, "preload", "preload.js");

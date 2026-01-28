@@ -247,9 +247,6 @@
   .flex {
     display: flex;
   }
-  .table {
-    display: table;
-  }
   .h-0 {
     height: calc(var(--spacing) * 0);
   }
@@ -271,9 +268,6 @@
   .w-100 {
     width: calc(var(--spacing) * 100);
   }
-  .max-w-1 {
-    max-width: calc(var(--spacing) * 1);
-  }
   .max-w-1\/2 {
     max-width: calc(1/2 * 100%);
   }
@@ -286,17 +280,11 @@
   .min-w-45 {
     min-width: calc(var(--spacing) * 45);
   }
-  .border-collapse {
-    border-collapse: collapse;
-  }
   .cursor-crosshair {
     cursor: crosshair;
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .appearance-none {
     appearance: none;
@@ -348,9 +336,6 @@
   }
   .border-b-gray-500 {
     border-bottom-color: var(--color-gray-500);
-  }
-  .bg-black {
-    background-color: var(--color-black);
   }
   .bg-black\/25 {
     background-color: color-mix(in srgb, #000 25%, transparent);
@@ -426,12 +411,6 @@
   .text-gray-300 {
     color: var(--color-gray-300);
   }
-  .text-red-400 {
-    color: var(--color-red-400);
-  }
-  .underline {
-    text-decoration-line: underline;
-  }
   .opacity-0 {
     opacity: 0%;
   }
@@ -451,13 +430,6 @@
   }
   .ring-cyan-400 {
     --tw-ring-color: var(--color-cyan-400);
-  }
-  .ring-red-400 {
-    --tw-ring-color: var(--color-red-400);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -619,11 +591,6 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -714,7 +681,6 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;

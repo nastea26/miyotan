@@ -177,4 +177,3 @@ document.querySelectorAll('.settings-el').forEach(el => {
     })
 });
 
-

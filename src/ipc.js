@@ -16,7 +16,7 @@ const { registerKeybinds, unregisterKeybinds } = require("./keybinds");
 ipcMain.handle('selection', async (event, rect) => {
     if(rect)closeSelectionWindow();
     setTimeout(() => {
-        // allow time to clear the area selections
+        // time to clear the area selections
     }, 1);
     await capture(rect);
     
@@ -24,6 +24,7 @@ ipcMain.handle('selection', async (event, rect) => {
     await prepIMG();
     const ocr_out = await ocr();
     console.log(`Best candidate: ${ocr_out}`)
+
 });
 
 ipcMain.handle("get-settings", () => {
