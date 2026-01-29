@@ -1,24 +1,25 @@
 const { app } = require("electron");
-const { createWindow }= require("./mainwindow");
+const { createWindow } = require("./mainwindow");
 const { registerKeybinds } = require("./keybinds");
-const { settingsExist, createSettings,} = require("./settings/settings");
+const { settingsExist, createSettings, } = require("./settings/settings");
 const { loadSettings } = require('./settings/runtime');
 const { logSettings } = require("./settings/runtime");
 const { loadAllDicts } = require("./dicts/manager");
-// hook up ipc handlers to main process
+
 require("./ipc");
 
 
 // app stuff 
-app.whenReady().then(async  () => {
+app.whenReady().then(async () => {
     createWindow();
-    if( !settingsExist )createSettings();
+    if (!settingsExist) createSettings();
     loadSettings();
     logSettings();
-    try{
+    try {
         const allDicts = await loadAllDicts();
-        console.log("Dictionaries loaded:", allDicts.map(d => d.name));
-    }catch(err){
+        console.log("Dictionaries loaded:", allDicts.glossary.map(d => d.name));
+        console.log("Dictionaries loaded:", allDicts.meta.map(d => d.name));
+    } catch (err) {
         console.error("Error loading dictionaries:", err);
     }
     registerKeybinds();

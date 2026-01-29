@@ -3,8 +3,10 @@ node_modules/
 .env
 roadmap.md
 week-plan.md
+tempOutputTracker.md
 /bin/linux/
 /bin/win/
 /bin/macos/
 /bin/capture/
 /temp/*
+/src/dicts/out.json

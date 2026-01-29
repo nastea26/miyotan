@@ -1,6 +1,7 @@
 const { globalShortcut } = require('electron');
 const { createSelectionWindow, closeSelectionWindow, getSelectionWindow } = require('./selectionwindow');
 const { getSettings } = require('./settings/runtime');
+const { lookup } = require('./dicts/lookup');
 
 function registerKeybinds() {
     const settings = getSettings()
@@ -10,13 +11,17 @@ function registerKeybinds() {
         if(getSelectionWindow() || !settings.enabled)return;
         console.log('Selection keybind pressed');
         createSelectionWindow();
-    })
+    });
 
     globalShortcut.register(keybinds.cancel, () => {
         if(!getSelectionWindow())return;
         closeSelectionWindow();
         console.log('cancel keybind pressed');
-    })
+    });
+
+    globalShortcut.register(keybinds.test, () => {
+        lookup("食べる");
+    });
 }
 
 function unregisterKeybinds() {

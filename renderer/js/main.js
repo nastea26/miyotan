@@ -197,7 +197,25 @@ async function refreshDictsList() {
         return;
     }
     
-    for(const dict of dicts){
+    for(const dict of dicts.glossary){
+        const row = document.createElement("div");
+        row.className = "flex justify-between items-center p-2 border-b border-gray-700 hover:bg-gray-800 transition-colors duration-200";
+        row.innerHTML = `
+        <span class="text-gray-200">${dict.name} (${dict.entries} entries)</span>
+        <button class="remove-dict-btn text-red-500 hover:text-red-400 px-2 py-1 rounded">Remove</button>
+        `;
+        
+        // Remove handler
+        row.querySelector(".remove-dict-btn").addEventListener("click", async () => {
+            if(confirm(`Remove dictionary "${dict.name}"?`)){
+                await window.miyotanAPI.remove(dict.name);
+                await refreshDictsList();
+            }
+        });
+        
+        dictsList.appendChild(row);
+    }
+    for(const dict of dicts.meta){
         const row = document.createElement("div");
         row.className = "flex justify-between items-center p-2 border-b border-gray-700 hover:bg-gray-800 transition-colors duration-200";
         row.innerHTML = `
@@ -226,7 +244,11 @@ importInput.multiple = true;
 importInput.addEventListener("change", async (e) => {
     if(importInput.files.length === 0) return;
     
-    const existingDicts = new Set((await window.miyotanAPI.list()).map(d => d.name));
+    const existingDicts = new Set([
+        ...((await window.miyotanAPI.list()).glossary.map(d => d.name)),
+        ...((await window.miyotanAPI.list()).meta.map(d => d.name))
+    ]);
+
     
     for (const file of importInput.files) {
         const name = file.name.replace(/\.zip$/i, "");
