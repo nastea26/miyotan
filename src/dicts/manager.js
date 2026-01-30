@@ -4,7 +4,7 @@ const paths = require("../../utils/paths");
 const JSZip = require("jszip");
 
 //helpers 
-const { load_tag_bank, load_glossary_index_and_terms } = require("./manager_helpers");
+const { load_glossary, load_meta } = require("./manager_helpers");
 
 // in memory dicts 
 const dicts = {
@@ -30,44 +30,12 @@ async function loadDicts(zipPath){
 
     //glossary only
     if(hasGlossary && !hasMeta){
-        let id = 0;
-        const fileNames = Object.keys(zip.files)
-        for (const fileName of fileNames){
-            //skip non json
-            if( !fileName.endsWith(".json") )continue;
-
-            //skip index.json
-            if( fileName === "index.json" )continue;
-
-            //for now skip all kanji related dicts
-            if( fileName.startsWith("kanji") )continue;
-
-            //only read tag or term dicts just to make sure
-            if( !fileName.startsWith("tag_") && !fileName.startsWith("term_") )continue
-
-            const tag_file = fileName.startsWith("tag_");
-            const term_file = fileName.startsWith("term_");
-            
-            const data = JSON.parse( await zip.file(fileName).async("string") );
-            //skip if empty -> so far all ive seen were arrays 
-            if(!Array.isArray(data))continue
-
-            if(tag_file){
-                load_tag_bank(data,tagMap)
-                continue;
-            }
-            else if(term_file){
-                //load current file update id
-                id = load_glossary_index_and_terms(data,id,termMap,index)
-            }
-
-        }
-        return { type: "glossary", index, termMap, tagMap };
+        return load_glossary(zip,index, termMap, tagMap)
     }
 
     //meta only
     else if(!hasGlossary && hasMeta){
-        return { type: "meta", index, termMap, tagMap };
+        return load_meta(zip, index, termMap);
     }
 
     //mixed

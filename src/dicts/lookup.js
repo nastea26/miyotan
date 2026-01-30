@@ -15,11 +15,28 @@ async function saveDictsToFile() {
 
         for (const [groupName, group] of Object.entries(dicts)) {
             for (const [dictName, dict] of Object.entries(group)) {
-                serializable[groupName][dictName] = {
-                    termMap: Object.fromEntries(dict.termMap),
-                    index: Object.fromEntries(dict.index),
-                    tagMap: Object.fromEntries(dict.tagMap)
+
+                const termMapLimited = Object.fromEntries(
+                    [...dict.termMap.entries()].slice(0, 100)
+                );
+
+                const indexLimited = Object.fromEntries(
+                    [...dict.index.entries()].slice(0, 100)
+                );
+
+                const outDict = {
+                    termMap: termMapLimited,
+                    index: indexLimited
                 };
+
+                // only glossary dictionaries have tagMap
+                if (groupName === "glossary" && dict.tagMap) {
+                    outDict.tagMap = Object.fromEntries(
+                        [...dict.tagMap.entries()].slice(0, 100)
+                    );
+                }
+
+                serializable[groupName][dictName] = outDict;
             }
         }
 
@@ -34,8 +51,6 @@ async function saveDictsToFile() {
         console.error("Failed to save dictionaries:", err);
     }
 }
-
-
 
 // prep
 function make_variations(term){
@@ -97,6 +112,7 @@ function lookup(term){
     }
 
     saveDictsToFile();
-    
+    const totalAPPsize = process.memoryUsage().heapUsed;
+    console.log(`App uses ${(totalAPPsize/1024/1024).toFixed(2)}MB of memory `)
 }
 module.exports = { lookup };
