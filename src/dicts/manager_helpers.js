@@ -1,3 +1,5 @@
+const wanakana = require('wanakana');
+
 function load_tag_bank(data,targetMap){
     for (const entry of data){
         if(!entry || entry.length === 0)continue;
@@ -33,8 +35,15 @@ function load_glossary_index_and_terms(data,id,termMap,index){
 
         termMap.set(eid,value);
         const key = entry[0];
-        if(!index.has(key)) index.set(key, []);
+        const readKey = (entry[1] === "" || !entry[1]) ? null : wanakana.toHiragana(entry[1]);
+        if(!index.has(key)) index.set( key, [] );
         index.get(key).push(eid);
+
+        if(readKey){
+            if(!index.has(readKey)) index.set( readKey,[] )
+            index.get(readKey).push(eid)
+        }
+        
     }
     return id;
 }
@@ -161,7 +170,7 @@ async function load_meta(zip,index,termMap){
 
         const data = JSON.parse( await zip.file(fileName).async("string") );
         if(!Array.isArray(data))continue;
-
+        
         id = load_meta_index_and_term(data, id, termMap, index)
     }
     return { type: "meta", index, termMap };
