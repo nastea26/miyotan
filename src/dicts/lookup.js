@@ -35,6 +35,12 @@ function make_variations(term){
     return { success:false };
 }
 
+
+function makeUniqueKey(expression, reading) {
+    return `${expression}｜${reading ?? ""}`;
+}
+
+
 //{
 // dict:{
 //      "expression":{entry}
@@ -47,25 +53,29 @@ function getGlossEntriesSortedByDicts(termArray){
         console.log(term)
         const glossKeys = Object.keys(dicts.glossary);
         const dictGloss = dicts.glossary;
-        let entries;
         glossKeys.forEach(key => {
-            if(dictGloss[key].index.has(term)){
-                entries = dictGloss[key].index.get(term);
-            }
+            const entries = dictGloss[key].index.get(term);
 
             if(!entries)return;
 
             let tempOut = {};                    
             entries.forEach(entry =>{
                 const glossEntr = dictGloss[key].termMap.get(entry); 
+                const uniqueKey = makeUniqueKey(glossEntr.expression,glossEntr.reading)
                 //merge
-                if( tempOut.hasOwnProperty(glossEntr.expression) && tempOut[glossEntr.expression].reading === glossEntr.reading ){
-                    glossEntr.tags.forEach(tag => { tempOut[glossEntr.expression].tags.push(tag) } );
-                    glossEntr.glossary.forEach(gloss => { tempOut[glossEntr.expression].glossary.push(gloss) } );
+
+                if( tempOut[uniqueKey] && tempOut[uniqueKey].reading === glossEntr.reading ){
+
+                    //make current tags into set so we can filter duplicates
+                    const tagsSet = new Set(tempOut[uniqueKey].tags);
+                    glossEntr.tags.forEach(tag => tagsSet.add(tag))
+                    //to array again
+                    tempOut[uniqueKey].tags = Array.from(tagsSet); 
+                    glossEntr.glossary.forEach(gloss => { tempOut[uniqueKey].glossary.push(gloss) } );
                 }
                 //append
                 else{
-                    tempOut[glossEntr.expression] = glossEntr;
+                    tempOut[uniqueKey] = glossEntr;
                 }
             })
             
@@ -74,7 +84,6 @@ function getGlossEntriesSortedByDicts(termArray){
     });
     return out;
 }
-
 
 function getDictEntry(termArray){
     const GlossEntriesByDictionaries = getGlossEntriesSortedByDicts(termArray);
@@ -86,22 +95,23 @@ function getDictEntry(termArray){
     // "expression":{
     //     "expression":x, "reading":x, glossary: {"dictName": [] , "dictName": []}, tags: {"dictName":[], "dictName" :[]}
     // }
+    //remade to "expression | reading" because cases like 来る
     dictKeys.forEach(dict => {
         const expressionKeys = Object.keys(GlossEntriesByDictionaries[dict]);
-        expressionKeys.forEach(expr =>{
-            const entry = GlossEntriesByDictionaries[dict][expr];
+        expressionKeys.forEach(uniqueKey =>{
+            const entry = GlossEntriesByDictionaries[dict][uniqueKey];
 
-            if(!GlossEntriesMergedByExpr[expr]){
-                GlossEntriesMergedByExpr[expr] = {
-                    expression: expr,
+            if(!GlossEntriesMergedByExpr[uniqueKey]){
+                GlossEntriesMergedByExpr[uniqueKey] = {
+                    expression: entry.expression,
                     reading: entry.reading,
                     glossary: {},
                     tags: {}
                 }
             }
 
-            GlossEntriesMergedByExpr[expr].glossary[dict] = entry.glossary ?? [];
-            GlossEntriesMergedByExpr[expr].tags[dict] = entry.tags ?? [];
+            GlossEntriesMergedByExpr[uniqueKey].glossary[dict] = entry.glossary ?? [];
+            GlossEntriesMergedByExpr[uniqueKey].tags[dict] = entry.tags ?? [];
         })
     })
 
@@ -111,7 +121,10 @@ function getDictEntry(termArray){
     const metaDicts = dicts.meta
     const metaKeys = Object.keys(metaDicts);
     
-    expressionKeys.forEach(expr => {
+    expressionKeys.forEach(exprKey => {
+        const exprEntry = GlossEntriesMergedByExpr[exprKey];
+        const expr = exprEntry.expression
+        
         
         metaKeys.forEach(key => {
             const entries = metaDicts[key].index.get(expr)
@@ -123,10 +136,10 @@ function getDictEntry(termArray){
                 console.log(entry)
                 if(!entry)return;
                 //check if expression and reading fit;
-                if( GlossEntriesMergedByExpr[expr].expression === entry.expression ){
+                if( exprEntry.expression === entry.expression ){
                     //if expression matches but reading doesnt -> cant add pitch / freq
-                    console.log(`The if statement at like 133: ${entry.hasOwnProperty("reading") && GlossEntriesMergedByExpr[expr].reading !== entry.reading}`)
-                    if( entry.reading && GlossEntriesMergedByExpr[expr].reading !== entry.reading )return
+                    console.log(`The if statement at like 133: ${entry.hasOwnProperty("reading") && exprEntry.reading !== entry.reading}`)
+                    if( entry.reading && exprEntry.reading !== entry.reading )return
                     entry_array.push(entry.data);
                 }
 
@@ -134,16 +147,16 @@ function getDictEntry(termArray){
 
             //type is same for all in one dict so we can get the first one
             const type = metaDicts[key].termMap.get(entries[0]).type;
-            if(!GlossEntriesMergedByExpr[expr][type]) GlossEntriesMergedByExpr[expr][type] = {};
+            if(!exprEntry[type]) exprEntry[type] = {};
 
-            GlossEntriesMergedByExpr[expr][type][key] = entry_array;
+            exprEntry[type][key] = entry_array;
 
         })
 
     })   
 
     console.log(
-        util.inspect(GlossEntriesMergedByExpr, {
+        util.inspect(Object.values(GlossEntriesMergedByExpr), {
             depth: null,
             colors: true,
             maxArrayLength: null,

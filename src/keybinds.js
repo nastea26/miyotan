@@ -20,7 +20,7 @@ function registerKeybinds() {
     });
 
     globalShortcut.register(keybinds.test, () => {
-        lookup("来る");
+        lookup("したい");
     });
 }
 

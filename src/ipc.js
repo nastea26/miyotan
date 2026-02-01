@@ -8,6 +8,8 @@ const { capture } = require("./capture/index");
 const { prepIMG } = require("./ocr/prep");
 const { ocr } = require("./ocr/ocr");
 
+//tokenizer 
+const { get_sentence_tokens } = require("./tokenizer/tokenize");
 //settings section
 const { getSettings, updateSettingWithPath } = require('./settings/runtime');
 const { registerKeybinds, unregisterKeybinds } = require("./keybinds");
@@ -27,7 +29,11 @@ ipcMain.handle('selection', async (event, rect) => {
     await prepIMG();
     const ocr_out = await ocr();
     console.log(`Best candidate: ${ocr_out}`)
-
+    
+    //tokenize ocr
+    const tokenized_ocr_out = get_sentence_tokens(ocr_out);
+    console.log("Tokens from best candidate:");
+    console.log(tokenized_ocr_out)
 });
 
 ipcMain.handle("get-settings", () => {

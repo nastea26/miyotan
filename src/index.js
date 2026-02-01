@@ -5,6 +5,7 @@ const { settingsExist, createSettings, } = require("./settings/settings");
 const { loadSettings } = require('./settings/runtime');
 const { logSettings } = require("./settings/runtime");
 const { loadAllDicts } = require("./dicts/manager");
+const { initTokenizer } = require("./tokenizer/tokenize");
 
 require("./ipc");
 
@@ -23,6 +24,8 @@ app.whenReady().then(async () => {
         console.error("Error loading dictionaries:", err);
     }
     registerKeybinds();
+    const tokenizerInited = await initTokenizer();
+    console.log(`tokenizer loaded with resolve: ${tokenizerInited}`);
 })
 
 app.on("window-all-closed", () => {
