@@ -50,7 +50,6 @@ function makeUniqueKey(expression, reading) {
 function getGlossEntriesSortedByDicts(termArray){
     const out = {};
     termArray.forEach(term => {
-        console.log(term)
         const glossKeys = Object.keys(dicts.glossary);
         const dictGloss = dicts.glossary;
         glossKeys.forEach(key => {
@@ -133,12 +132,10 @@ function getDictEntry(termArray){
             let entry_array = [];
             entries.forEach( index => {
                 const entry = metaDicts[key].termMap.get(index);
-                console.log(entry)
                 if(!entry)return;
                 //check if expression and reading fit;
                 if( exprEntry.expression === entry.expression ){
                     //if expression matches but reading doesnt -> cant add pitch / freq
-                    console.log(`The if statement at like 133: ${entry.hasOwnProperty("reading") && exprEntry.reading !== entry.reading}`)
                     if( entry.reading && exprEntry.reading !== entry.reading )return
                     entry_array.push(entry.data);
                 }
@@ -155,25 +152,15 @@ function getDictEntry(termArray){
 
     })   
 
-    console.log(
-        util.inspect(Object.values(GlossEntriesMergedByExpr), {
-            depth: null,
-            colors: true,
-            maxArrayLength: null,
-            compact: false
-        })
-    );
-
+    return Object.values(GlossEntriesMergedByExpr);
 }
 
 
 //main
 function lookup(term){
     const variations = make_variations(term);
-    console.log("Lookup variations:\n", variations);
     
     if(!variations.success){
-        console.log(`No valid variations could be made for term ${term}`);
         return false; 
     }
     let varsArray = [];
@@ -194,7 +181,7 @@ function lookup(term){
 
     
 
-    getDictEntry(varsArray);
+    return getDictEntry(varsArray);
     //mem log
     // const totalAPPsize = process.memoryUsage().heapUsed;
     // console.log(`App uses ${(totalAPPsize/1024/1024).toFixed(2)}MB of memory `)

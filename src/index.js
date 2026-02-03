@@ -6,7 +6,7 @@ const { loadSettings } = require('./settings/runtime');
 const { logSettings } = require("./settings/runtime");
 const { loadAllDicts } = require("./dicts/manager");
 const { initTokenizer } = require("./tokenizer/tokenize");
-
+const { run } = require("./test")
 require("./ipc");
 
 
@@ -26,6 +26,9 @@ app.whenReady().then(async () => {
     registerKeybinds();
     const tokenizerInited = await initTokenizer();
     console.log(`tokenizer loaded with resolve: ${tokenizerInited}`);
+
+    console.log("RUNNING TEST FROM ./test.js");
+    run();
 })
 
 app.on("window-all-closed", () => {
