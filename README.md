@@ -13,3 +13,10 @@ Since I've hit a roadblock when it comes to the lookups, there's not really any 
 Additionally, the functionality also has issues when it comes to using different systems; the biggest one would be the area selection which we want to parse with the OCR, was made for Linux (To be specific, Linux Mint Zara) as that was the system I was on when creating this. When cloning this repo onto a Windows machine, the captured area was not the same as the selected area.
 
 ### That being said, I do not plan on dropping this project, and I would like to finish it and release it someday.
+
+SHOWCASES FROM WHAT WORKS:
+### App (settings/controls)
+<img width="1291" height="849" alt="image" src="https://github.com/user-attachments/assets/2198fa31-a3b1-41ba-9e53-ebe9e4c7d0b9" />
+
+### Dictionary view
+<img width="1281" height="846" alt="image" src="https://github.com/user-attachments/assets/c017aff3-8ee9-4be9-a93e-f72512f79f02" />
