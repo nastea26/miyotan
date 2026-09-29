@@ -52,8 +52,10 @@ The issue arises in cases where we have a sentence where verbs, nouns, etc., hav
 When I return to this project, the first approach (and the only one that came to mind as of now) I'll try is Dictionary lookups into tokenized text, where I'd have to score the responses from each based on criteria I've not thought of yet. (Example: 食べった, using the dictionary lookups while removing characters would result in　食,　while the tokenizer will show the base form　食べる. I'd want to show both of these. However, the score will be the indicator of which form is more likely to show what the user is looking for.) 
 
 ### YOMITAN LOOKUPS (the browser extension which serves as a reference for this whole project) 
-Using the example of "どうしよう" we can see that the extension shows multiple entries for the scanned text (starting from the longest 'most likely' match) 
+Using the example of "どうしよう" we can see that the extension shows multiple entries for the scanned text (starting from the longest 'most likely' match)
+
 <img width="415" height="289" alt="image" src="https://github.com/user-attachments/assets/1f09ad7b-bc5e-476b-b6fd-ee8f99bfadd8" />
 <img width="431" height="316" alt="image" src="https://github.com/user-attachments/assets/68a380af-b1a6-4906-8b65-6f5b1c9b4d1c" />
+
 These are just some examples, the actual number of matches depends on dictionaries (like names, places etc.) 
 
