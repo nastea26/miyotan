@@ -40,6 +40,7 @@ When we look at this expression without any tokenization and compare it against 
 <img width="503" height="171" alt="image" src="https://github.com/user-attachments/assets/431434b8-9df2-49ae-bd64-efe1499c1a19" />
 
 (Using the same expression as an example) When we run the tokenizer on this expression, we end up losing potential dictionary matches if any part of the text (The following console logs are not the prettiest; I apologize): 
+
 <img width="314" height="660" alt="image" src="https://github.com/user-attachments/assets/c4c7f0cc-417f-48b6-968a-8a933e9cff46" />
 <img width="357" height="456" alt="image" src="https://github.com/user-attachments/assets/b0cffbe4-c4bf-40e5-8712-8e58ab8e2415" />
 
