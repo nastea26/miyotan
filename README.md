@@ -25,6 +25,7 @@ Additionally, the functionality also has issues when it comes to using different
 ### OCR Capture showcase: 
 Tokenizer: kuromoji
 OCR: tesseract
+
 https://github.com/user-attachments/assets/a307f4b6-21d7-4f1c-864c-cb3a265101c9
 
 ## TOKENIZATION AND DICTIONARY PARSED OUTPUT (ALSO THE PROBLEM IN BETWEEN)
